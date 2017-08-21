@@ -8,7 +8,7 @@
     "start": "webpack-dev-server",
     "jss": "json-server --watch db.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":  "start npm run start && start npm run dist"
+    "dev":  "start npm run start && start npm run dist && start npm run jss"
   },
   "repository": {
     "type": "git",
