@@ -1,1 +1,3 @@
-- TP05: pag4 - falta anyadir Webpack y todo eso
+- TP05: 
+
+1. Webpack 
