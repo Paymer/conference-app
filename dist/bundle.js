@@ -72,6 +72,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_talk_service__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__layout_index__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__speakers_list_index__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sessions_list_index__ = __webpack_require__(5);
+
 
 
 
@@ -79,27 +81,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 alert('Conférence App démarré !');
 
-let tser = new __WEBPACK_IMPORTED_MODULE_0__common_talk_service__["a" /* default */]();
-
-console.log(tser.findAllSpeakers()
-.then((list)=>{
-    //We need a list of names
-        return list.map((element) => {
-        return (`${element.firstname} ${element.lastname}`);
-        });
-})
-.then((list)=>{
-    return(list);
-}));
-
-let lay = new __WEBPACK_IMPORTED_MODULE_1__layout_index__["a" /* default */]();
-lay.render();
-
-let ss = new __WEBPACK_IMPORTED_MODULE_2__speakers_list_index__["a" /* default */] ();
-ss.render(list);
+const lay = new __WEBPACK_IMPORTED_MODULE_1__layout_index__["a" /* default */]();
+const tser = new __WEBPACK_IMPORTED_MODULE_0__common_talk_service__["a" /* default */]();
+const spli = new __WEBPACK_IMPORTED_MODULE_2__speakers_list_index__["a" /* default */](tser);
+const sesli = new __WEBPACK_IMPORTED_MODULE_3__sessions_list_index__["a" /* default */](tser);
 
 
 
+var router = () => {
+    if (location.hash == '#speakers-list') {
+        // afficher vue liste des présentateurs
+        spli.render("main-view");
+
+    } else if (location.hash == '#sessions-list') {
+        // afficher vue liste des sessions
+         sesli.render("#main-view");
+
+    } else {
+        // afficher vue par défaut
+        lay.render();
+    }
+}
+    window.addEventListener('load', () => {
+    window.onhashchange = () => {
+    router();
+    };
+    router();
+    });
 
          
 
@@ -116,11 +124,8 @@ class TalkService {
 
     //return list of all the speakers
     findAllSpeakers() {
-
         //PROMISE
         return new Promise((resolve, reject) => {
-
-
             const req = new XMLHttpRequest();
             req.open('GET', 'http://localhost:3000/speakers', true);
             req.onreadystatechange = (aEvt) => {
@@ -134,15 +139,36 @@ class TalkService {
                     } else {
                         reject(`Erreur pendant le chargement de la page`)
                     }
-
-                };
-               
+                }; 
             }
             req.send(null);
-
         })
-
     }
+
+//return list of all the sessions
+    findAllSessions() {
+        //PROMISE
+        return new Promise((resolve, reject) => {
+            const req = new XMLHttpRequest();
+            req.open('GET', 'http://localhost:3000/sessions', true);
+            req.onreadystatechange = (aEvt) => {
+                // 4 the answr is ready
+                if (req.readyState == 4) {
+                    // the answer is correct
+                    if (req.status == 200) {
+                            //the response is a string, so it is necessary to transform it into JS
+                            resolve(JSON.parse(req.responseText));
+                           
+                    } else {
+                        reject(`Erreur pendant le chargement de la page`)
+                    }
+                }; 
+            }
+            req.send(null);
+        })
+    }
+
+
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = TalkService;
 
@@ -179,21 +205,54 @@ module.exports = "\r\n\r\n<header>Ici Bientôt un logo</header>\r\n<nav>Ici bien
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
 class SpeakerList {
 
-    render(idView){
-         document.querySelector('body').innerHTML = `<ul>`;
-        list = list.forEach(function(element) {
-            document.querySelector('body').innerHTML = `<li>${element}</li>`;
-        }, this);
-        document.querySelector('body').innerHTML = `</ul>`;
+    constructor(talkService) {
+        this.talkService = talkService;
+    }
 
-        
+    render(idView) {
+
+        this.talkService.findAllSpeakers()
+            .then((list) => {
+
+                document.querySelector(idView).innerHTML ='<ul>'+ list.map((element) => {
+                    return (`<li>${element.firstname} ${element.lastname}</li>`);
+                }).join('')+`</ul>`;
+            });
+            
+
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = SpeakerList;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+class SessionsList {
+
+    constructor(talkService) {
+        this.talkService = talkService;
+    }
+
+    render(idView) {
+
+        this.talkService.findAllSessions()
+            .then((list) => {
+
+                document.querySelector(idView).innerHTML ='<ul>'+ list.map((element) => {
+                    return (`<li> ${element.title}</li>`);
+                }).join('')+`</ul>`;
+            });
+            
+
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = SessionsList;
 
 
 /***/ })
