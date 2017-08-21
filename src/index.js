@@ -4,6 +4,8 @@ import Layout from "./layout/index";
 import SpeakerList from "./speakers/list/index";
 import SessionsList from "./sessions/list/index";
 
+import 'bootstrap/dist/css/bootstrap.css';
+
 alert('Conférence App démarré !');
 
 const lay = new Layout();

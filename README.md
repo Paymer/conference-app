@@ -29,4 +29,14 @@
 
 4. Routeur
 
+5. Application
 
+Page Accueil: Started the htmml not linked to the program
+
+
+TODO:
+- Liste Sessions
+- Liste presentateurs
+- details sessions
+- details presentateurs
+- notes
