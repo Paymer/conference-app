@@ -1,20 +1,22 @@
 
 import TalkService from "./common/talk.service";
+import Layout from "./layout/index";
+import SpeakerList from "./speakers/list/index";
 
 alert('Conférence App démarré !');
 
+const lay = new Layout();
+const tser = new TalkService();
+const spli = new SpeakerList(tser);
 
-let tser = new TalkService();
 
-tser.findAllSpeakers()
-.then((list)=>{
-    //We need a list of names
-        return list.map((element) => {
-        return (`${element.firstname} ${element.lastname}`);
-        });
-})
-.then((list)=>{
-    console.log(list);
-})
+
+
+
+lay.render();
+spli.render("#main-view");
+
+
+
 
          
