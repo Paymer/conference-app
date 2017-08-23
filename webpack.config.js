@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require("webpack");
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 //var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -27,6 +28,12 @@ output: {
   },
 plugins: [
     //new UglifyJSPlugin(),
-    new HtmlWebpackPlugin()
+    new HtmlWebpackPlugin(),
+    new webpack.ProvidePlugin({
+	$: "jquery",
+	jQuery: "jquery",
+	"window.jQuery": "jquery",
+	Popper:'popper.js'
+})
         ]
 };

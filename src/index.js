@@ -3,7 +3,7 @@ import TalkService from "./common/talk.service";
 import Layout from "./layout/index";
 import SpeakerList from "./speakers/list/index";
 import SessionsList from "./sessions/list/index";
-
+import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 alert('Conférence App démarré !');
