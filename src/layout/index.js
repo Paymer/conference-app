@@ -1,5 +1,6 @@
  import template from './layout.html';
 
+
 console.log(template);
 export default  class Layout{
 
